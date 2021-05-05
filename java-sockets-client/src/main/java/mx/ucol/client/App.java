@@ -18,15 +18,16 @@ public class App {
             socket = new Socket("localhost", port);
             outputStream = new DataOutputStream(socket.getOutputStream());
             inputStream = new DataInputStream(socket.getInputStream());
-            Thread.sleep(3000);
             System.out.println("Connection accepted. If you want to leave, just write \"exit\"");
-            while (inputMessage != "exit"){
+            do {
                 System.out.println("Write a message");
                 Scanner scanner = new Scanner(System.in);
                 outputStream.writeUTF(scanner.nextLine());
                 inputMessage = inputStream.readUTF();
-                System.out.println("Answer received: " + inputMessage);
-            }
+                if(!inputMessage.equals("exit")){
+                    System.out.println("Answer received: " + inputMessage);
+                }
+            } while (!inputMessage.equals("exit"));
 
             socket.close();
         } catch (Exception e) {

@@ -6,7 +6,6 @@ import java.net.*;
 
 public class App {
     public static void main(String[] args) {
-        Thread alien;
         int port = 3000;
         ServerSocket serverSocket;
         Socket socket;
@@ -19,17 +18,16 @@ public class App {
             serverSocket = new ServerSocket(port);
             socket = serverSocket.accept();
             outputStream = new DataOutputStream(socket.getOutputStream());
-            do {
+            while (!inputMessage.equals("exit")) {
                 inputStream = new DataInputStream(socket.getInputStream());
                 inputMessage = inputStream.readUTF();
                 System.out.println("Received message: " + inputMessage);
-                outputMessage = getRandomPhrase();
-                System.out.println("Answering: " + outputMessage);
-                outputStream.writeUTF(outputMessage);
-                if(inputMessage == "exit"){
-                    System.out.println("we're gonna leave...");
+                if(!inputMessage.equals("exit")){
+                    outputMessage = getRandomPhrase();
+                    System.out.println("Answering: " + outputMessage);
+                    outputStream.writeUTF(outputMessage);
                 }
-            } while (inputMessage != "exit");
+            }
             outputStream.writeUTF("exit");
             socket.close();
             serverSocket.close();
