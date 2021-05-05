@@ -25,7 +25,7 @@ public class App {
                 outputStream.writeUTF(scanner.nextLine());
                 inputMessage = inputStream.readUTF();
                 if(!inputMessage.equals("exit")){
-                    System.out.println("Answer received: " + inputMessage);
+                    System.out.println("Server says: " + inputMessage);
                 }
             } while (!inputMessage.equals("exit"));
 
