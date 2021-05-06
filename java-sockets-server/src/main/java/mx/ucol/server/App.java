@@ -9,27 +9,14 @@ public class App {
         int port = 3000;
         ServerSocket serverSocket;
         Socket socket;
-        DataInputStream inputStream;
-        DataOutputStream outputStream;
-        String inputMessage = "";
 
         try {
             serverSocket = new ServerSocket(port);
+            System.out.println("Waiting for a connection...");
             socket = serverSocket.accept();
-            outputStream = new DataOutputStream(socket.getOutputStream());
-            while (!inputMessage.equals("exit")) {
-                inputStream = new DataInputStream(socket.getInputStream());
-                inputMessage = inputStream.readUTF();
-                System.out.println("Client says: " + inputMessage);
-                if(!inputMessage.equals("exit")){
-                    System.out.println("Write an answer");
-                    Scanner scanner = new Scanner(System.in);
-                    outputStream.writeUTF(scanner.nextLine());
-                }
-            }
-            outputStream.writeUTF("exit");
-            socket.close();
-            serverSocket.close();
+            System.out.println("Connection accepted");
+            new Thread(new Input(socket)).start();
+            new Thread(new Output(socket)).start();
         } catch (IOException e) {
             System.err.print(e);
         }
